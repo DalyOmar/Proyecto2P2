@@ -1,0 +1,81 @@
+#include <windows.h>  // Incluye la biblioteca de Windows para utilizar  funciones del sistema operativo
+#include <iostream>   // Incluye la biblioteca estándar de C++ para entrada y salida
+#include <cstring>    // Incluye la biblioteca de cadenas de caracteres
+using namespace std;
+
+int us = 0, i;  // Declaración de variables globales "us" e "i" para el número de estudiantes y un contador
+void lectura(char nombre[][20], float notas[][3]);  // Prototipo de función para leer los datos de los estudiantes
+void impresion(char nombre[][20], float notas[][3]);  // Prototipo de función para imprimir los datos de los estudiantes
+
+int main(void)
+{
+    printf("Ingrese la cantidad de estudiantes a registrar: ");  // Imprime un mensaje pidiendo al usuario que ingrese la cantidad de estudiantes a registrar
+    scanf("%d", &us);  // Lee el número de estudiantes ingresado por el usuario y lo guarda en la variable "us"
+
+    while (us<0)  // Repite mientras el número de estudiantes sea menor o igual a cero
+    {
+        printf("La cantidad de estudiantes debe ser mayor a cero. Ingrese nuevamente: ");  // Imprime un mensaje de error
+        scanf("%d", &us);  // Lee nuevamente el número de estudiantes ingresado por el usuario
+    }
+
+    char nombre[us][20];  // Declaración de una matriz de caracteres para almacenar los nombres de los estudiantes
+    float notas[us][3];  // Declaración de una matriz de números de punto flotante para almacenar las notas de los estudiantes
+    lectura(nombre, notas);  // Llama a la función "lectura" para leer los nombres y las notas de los estudiantes
+    system("cls");  // Limpia la pantalla
+    impresion(nombre, notas);  // Llama a la función "impresion" para imprimir los datos de los estudiantes
+}
+
+void lectura(char nombre[][20], float notas[][3])
+{
+    for (i = 0; i < us; i++)  // Itera desde 0 hasta el número de estudiantes ingresado por el usuario
+    {
+        system("cls");  // Limpia la pantalla
+        printf("\nNombre %d: ", i + 1);  // Imprime un mensaje pidiendo al usuario que ingrese el nombre del estudiante
+        scanf("%s", &nombre[i]);  // Lee el nombre del estudiante ingresado por el usuario y lo guarda en la matriz "nombre"
+        printf("\nNotas de los parciales: ");  // Imprime un mensaje pidiendo al usuario que ingrese las notas de los parciales
+        for (int j = 0; j < 3; j++)  // Itera desde 0 hasta 2 (3 parciales)
+        {
+            printf("\nParcial %d: ", j + 1);  // Imprime un mensaje pidiendo al usuario que ingrese la nota del parcial correspondiente
+            scanf("%f", &notas[i][j]);  // Lee la nota del parcial ingresada por el usuario y la guarda en la matriz "notas"
+
+            while (notas[i][j]<0 || notas[i][j] > 20)  // Repite mientras la nota del parcial sea menor o igual a cero o mayor a 20
+            {
+                printf("La Nota debe ser mayor a cero y menor o igual a 20. Ingrese nuevamente: ");  // Imprime un mensaje de error
+                scanf("%f", &notas[i][j]);  // Lee nuevamente la nota del parcial ingresada por el usuario
+            }
+
+            if (j == 2)  // Si es el tercer parcial
+            {
+                notas[i][j] = notas[i][j] * 0.3;  // Multiplica la nota del tercer parcial por 0.3 y la guarda en la matriz "notas"
+            }
+            else  // Si no es el tercer parcial
+            {
+                notas[i][j] = notas[i][j] * 0.35;  // Multiplica la nota del parcial por 0.35 y la guarda en la matriz "notas"
+            }
+        }
+    }
+}
+
+void impresion(char nombre[][20], float notas[][3])
+{
+    printf("\t\t\t\tTabla de Calificaciones");  // Imprime un encabezado de la tabla de calificaciones
+    printf("\n|Nombre\t\t|Primer Parcial\t|Segundo Parcial |Tercer Parcial |Nota Final\t|Estado");  // Imprime las etiquetas de las columnas de la tabla
+    printf("\n-------------------------------------------------------------------------------------------");  // Imprime una línea divisoria
+    for (i = 0; i < us; i++)  // Itera desde 0 hasta el número de estudiantes
+    {
+        float nota_final = notas[i][0] + notas[i][1] + notas[i][2];  // Calcula la nota final sumando las notas de los tres parciales
+        printf("\n|%s\t\t|", nombre[i]);  // Imprime el nombre del estudiante
+        printf("%.2f\t\t|", notas[i][0]);  // Imprime la nota del primer parcial
+        printf("%.2f\t\t |", notas[i][1]);  // Imprime la nota del segundo parcial
+        printf("%.2f\t\t |", notas[i][2]);  // Imprime la nota del tercer parcial
+        printf("%.2f\t\t|", nota_final);  // Imprime la nota final
+        if (nota_final >= 14)  // Si la nota final es mayor o igual a 14
+        {
+            printf("Aprobado");  // Imprime "Aprobado"
+        }
+        else  // Si la nota final es menor a 14
+        {
+            printf("No Aprobado");  // Imprime "No Aprobado"
+        }
+    }
+}//Grupo#2_Vega
